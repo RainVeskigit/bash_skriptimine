@@ -1,0 +1,27 @@
+#!/bin/bash
+#Rain Veski
+#VTo20
+#See skript lisab kasutaja failist ja teisest failist määrab kasutajale vastava parooli
+
+if [ $# -ne 1 ]; then
+	echo "Kasutusjuhend: $0 kasutajanimi"
+else
+	kasutajad4=$1
+	unpw=$(paste -d":" kasutajad4 paroolid4)
+	echo "$unpw"
+	if [ -f $kasutajad4 -a -r $kasutajad4 ] ; then
+	echo "kasutaja fail on korras"
+	for rida in $(cat $kasutajad4) 
+	do
+	kasutajanimi=$(echo "$rida")
+	useradd $kasutajanimi -m -s /bin/bash
+	done
+	for line in $unpw 
+	do
+	echo "$line" | chpasswd
+	done
+	else
+	echo "probleem failiga $kasutajad4" 
+	fi
+fi
+
