@@ -3,7 +3,8 @@
 #VTo20
 #See skript lisab kasutaja failist ja teisest failist määrab kasutajale vastava parooli
 kasutaja=$SUDO_USER
-if [[ "$kasutaja" != "root" ]]; then
+su="root"
+if [ "$kasutaja" != "$su" ]; then
 echo "Palun jooksuta kasutajana root"
 else	
 	echo "Tegelik kasutaja on tegelikult $kasutaja, isegi kui kasutada sudo käsklust"
