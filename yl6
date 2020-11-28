@@ -2,24 +2,25 @@
 #Rain Veski
 #VTo20
 #See skript lisab kasutaja failist ja teisest failist määrab kasutajale vastava parooli
-
-if [ "$EUID" -ne 0 ]; then
+kasutaja=$SUDO_USER
+if [[ "$kasutaja" != "root" ]]; then
 echo "Palun jooksuta kasutajana root"
 else	
+	echo "Tegelik kasutaja on tegelikult $kasutaja, isegi kui kasutada sudo käsklust"
 	if [ $# -ne 1 ]; then
 		echo "Kasutusjuhend: $0 kasutajanimi"
 	else
 		kasutajad5=$1
 		if [ -f $kasutajad5 -a -r $kasutajad5 ] ; then
-		echo "kasutaja fail on korras"
-		for rida in $(cat $kasutajad5) 
-		do
-		parool=$(pwgen -1 -s 8)
-		kasutajanimi=$(echo "$rida")
-		useradd $kasutajanimi -m -s /bin/bash
-		echo "$kasutajanimi:$parool" | chpasswd
-		echo "$kasutajanimi:$parool" >> /bash_skriptimine/userlog
-		done
+			echo "kasutaja fail on korras"
+			for rida in $(cat $kasutajad5) 
+			do
+			parool=$(pwgen -1 -s 8)
+			kasutajanimi=$(echo "$rida")
+			useradd $kasutajanimi -m -s /bin/bash
+			echo "$kasutajanimi:$parool" | chpasswd
+			echo "$kasutajanimi:$parool" >> /bash_skriptimine/userlog
+			done
 		else
 		echo "probleem failiga kasutajad5"
 		fi
